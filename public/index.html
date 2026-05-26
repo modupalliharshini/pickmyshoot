@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Pick My Shoot | Photography Booking Marketplace</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Icon Libraries -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Inline specific styles for landing/auth split layout */
+    .auth-page {
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+    .auth-hero-pane {
+      background-image: url('assets/login_bg.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+    .form-switch-prompt {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .form-switch-prompt span {
+      color: var(--primary-color);
+      cursor: pointer;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+    .form-switch-prompt span:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-page">
+    <!-- Left Hero Pane -->
+    <div class="auth-hero-pane">
+      <div class="auth-hero-header">
+        <img src="assets/logo.png" alt="Pick My Shoot Logo" style="height: 60px; width: auto; object-fit: contain; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));">
+      </div>
+      <div class="auth-hero-body">
+        <h1>Moments Captured. Instantly.</h1>
+        <p>A high-fidelity booking platform bridging professional photography talent and clients. Powered by PickMyShoot's cinematic standards.</p>
+      </div>
+      <div class="auth-hero-footer">
+        &copy; 2026 Pick My Shoot Marketplace. Designed by The Patterns Company.
+      </div>
+    </div>
+
+    <!-- Right Form Pane -->
+    <div class="auth-form-pane">
+      <div class="auth-form-container">
+        
+        <!-- Tab Selector: Log In / Sign Up -->
+        <div class="auth-role-selector" id="auth-flow-selector">
+          <button class="auth-role-btn active" onclick="switchFlow('login')">Log In</button>
+          <button class="auth-role-btn" onclick="switchFlow('signup')">Register</button>
+        </div>
+
+        <!-- Role Selectors (Customer / Photographer) -->
+        <div class="auth-role-selector" id="auth-role-selector" style="margin-bottom: 24px;">
+          <button class="auth-role-btn active" id="role-btn-customer" onclick="setRole('customer')">Customer Portal</button>
+          <button class="auth-role-btn" id="role-btn-photographer" onclick="setRole('photographer')">Photographer Partner</button>
+        </div>
+
+        <!-- 1. LOGIN FORM -->
+        <div id="login-section">
+          <div class="auth-form-header">
+            <h2 id="login-title">Log In as Customer</h2>
+            <p>Enter your credentials to access your dashboard.</p>
+          </div>
+
+          <form id="login-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+              <label for="login-email">Email Address</label>
+              <input type="email" id="login-email" required placeholder="name@email.com">
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 12px; height: 50px;">
+              Sign In <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </button>
+          </form>
+          
+          <div class="form-switch-prompt">
+            Don't have an account? <span onclick="switchFlow('signup')">Register here</span>
+          </div>
+        </div>
+
+        <!-- 2. SIGN UP FORM -->
+        <div id="signup-section" class="hidden">
+          <div class="auth-form-header">
+            <h2 id="signup-title">Register as Customer</h2>
+            <p>Join PickMyShoot and start booking elite shoots.</p>
+          </div>
+
+          <form id="signup-form" onsubmit="handleSignup(event)">
+            <div class="form-group">
+              <label for="signup-name">Full Name</label>
+              <input type="text" id="signup-name" required placeholder="Marcus Vane">
+            </div>
+            <div class="form-group">
+              <label for="signup-email">Email Address</label>
+              <input type="email" id="signup-email" required placeholder="marcus@gmail.com">
+            </div>
+            <div class="form-group">
+              <label for="signup-phone">Phone Number</label>
+              <input type="tel" id="signup-phone" required placeholder="+91 90105 20848">
+            </div>
+            <div class="form-group">
+              <label for="signup-password">Password</label>
+              <input type="password" id="signup-password" required placeholder="••••••••">
+            </div>
+
+            <!-- Photographer-specific fields (Toggled dynamically) -->
+            <div id="photographer-specific-fields" class="hidden" style="border-top: 1px solid var(--grey-border); padding-top: 16px; margin-top: 16px;">
+              <h4 style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--grey-text); margin-bottom: 16px;">Photographer Details</h4>
+              
+              <div class="form-group">
+                <label for="signup-title-desc">Professional Title</label>
+                <input type="text" id="signup-title-desc" placeholder="Wedding & Editorial Photographer">
+              </div>
+              <div class="form-group">
+                <label for="signup-hourly">Hourly Rate (₹)</label>
+                <input type="number" id="signup-hourly" placeholder="450">
+              </div>
+              <div class="form-group">
+                <label for="signup-skills">Primary Shoots (Comma separated)</label>
+                <input type="text" id="signup-skills" placeholder="Wedding, Editorial, Portraits">
+              </div>
+              <div class="form-group">
+                <label for="signup-website">Portfolio Link</label>
+                <input type="url" id="signup-website" placeholder="https://julianvane.studio">
+              </div>
+              <div class="form-group">
+                <label for="signup-location">Operating Location</label>
+                <input type="text" id="signup-location" placeholder="Brooklyn, NY">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 16px; height: 50px;">
+              Create Account <i class="fa-solid fa-user-plus"></i>
+            </button>
+          </form>
+
+          <div class="form-switch-prompt">
+            Already have an account? <span onclick="switchFlow('login')">Log In here</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared State and Authentication Javascript Logic -->
+  <script src="js/app.js"></script>
+  <script>
+    let activeRole = 'customer'; // 'customer' or 'photographer'
+    let activeFlow = 'login'; // 'login' or 'signup'
+
+    // Switch between Login and Registration forms
+    function switchFlow(flow) {
+      activeFlow = flow;
+      const flowButtons = document.querySelectorAll('#auth-flow-selector .auth-role-btn');
+      
+      if (flow === 'login') {
+        flowButtons[0].classList.add('active');
+        flowButtons[1].classList.remove('active');
+        document.getElementById('login-section').classList.remove('hidden');
+        document.getElementById('signup-section').classList.add('hidden');
+      } else {
+        flowButtons[0].classList.remove('active');
+        flowButtons[1].classList.add('active');
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('signup-section').classList.remove('hidden');
+      }
+      updateTitles();
+    }
+
+    // Set user role
+    function setRole(role) {
+      activeRole = role;
+      
+      const custBtn = document.getElementById('role-btn-customer');
+      const photoBtn = document.getElementById('role-btn-photographer');
+      const photoFields = document.getElementById('photographer-specific-fields');
+      
+      if (role === 'customer') {
+        custBtn.classList.add('active');
+        photoBtn.classList.remove('active');
+        photoFields.classList.add('hidden');
+        
+        // Setup placeholders
+        document.getElementById('signup-email').placeholder = 'marcus@gmail.com';
+      } else {
+        custBtn.classList.remove('active');
+        photoBtn.classList.add('active');
+        photoFields.classList.remove('hidden');
+        
+        // Setup placeholders
+        document.getElementById('signup-email').placeholder = 'julian@pickmyshoot.com';
+      }
+      updateTitles();
+    }
+
+    // Update form headers dynamically
+    function updateTitles() {
+      const roleText = activeRole === 'customer' ? 'Customer' : 'Photographer Partner';
+      document.getElementById('login-title').textContent = `Log In as ${roleText}`;
+      document.getElementById('signup-title').textContent = `Register as ${roleText}`;
+    }
+
+    // Form Submission: Login
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const pass = document.getElementById('login-password').value;
+
+      const res = AppState.login(email, pass, activeRole);
+      if (res.success) {
+        showToast(`Signed in successfully as ${res.user.name}!`, 'success');
+        setTimeout(() => {
+          if (activeRole === 'customer') {
+            window.location.href = 'customer.html';
+          } else {
+            window.location.href = 'photographer.html';
+          }
+        }, 1000);
+      } else {
+        showToast(res.message, 'error');
+      }
+    }
+
+    // Form Submission: Signup
+    function handleSignup(e) {
+      e.preventDefault();
+      const name = document.getElementById('signup-name').value;
+      const email = document.getElementById('signup-email').value;
+      const phone = document.getElementById('signup-phone').value;
+      const pass = document.getElementById('signup-password').value;
+
+      let extra = {};
+      if (activeRole === 'photographer') {
+        extra.title = document.getElementById('signup-title-desc').value || 'Professional Photographer';
+        extra.hourlyRate = document.getElementById('signup-hourly').value || 300;
+        extra.skills = document.getElementById('signup-skills').value.split(',').map(s => s.trim()) || ['Portrait'];
+        extra.website = document.getElementById('signup-website').value || '';
+        extra.location = document.getElementById('signup-location').value || 'New York, NY';
+      }
+
+      const res = AppState.register(name, email, pass, activeRole, extra);
+      if (res.success) {
+        showToast('Registration successful! Accessing your portal...', 'success');
+        setTimeout(() => {
+          if (activeRole === 'customer') {
+            window.location.href = 'customer.html';
+          } else {
+            window.location.href = 'photographer.html';
+          }
+        }, 1000);
+      } else {
+        showToast(res.message, 'error');
+      }
+    }
+
+    // Pre-populate input values for quick testing convenience
+    window.addEventListener('DOMContentLoaded', () => {
+      // By default check url parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetRole = urlParams.get('role');
+      if (targetRole === 'photographer') {
+        setRole('photographer');
+        document.getElementById('login-email').value = 'julian@pickmyshoot.com';
+        document.getElementById('login-password').value = '123456';
+      } else {
+        document.getElementById('login-email').value = 'marcus@gmail.com';
+        document.getElementById('login-password').value = '123456';
+      }
+    });
+  </script>
+</body>
+</html>

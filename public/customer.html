@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Portal | Pick My Shoot</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Icon Libraries -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Specific styles for Customer booking UI */
+    .category-scroll-wrapper {
+      margin-bottom: 40px;
+    }
+    .booking-summary-box {
+      background-color: var(--light-bg);
+      border: 1px solid var(--grey-border);
+      border-radius: var(--border-radius-md);
+      padding: 16px;
+      margin-top: 16px;
+    }
+    .booking-summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .booking-summary-row:last-child {
+      margin-bottom: 0;
+      border-top: 1px solid var(--grey-border);
+      padding-top: 8px;
+      font-weight: 800;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header>
+    <div class="container header-wrapper">
+      <div class="logo">
+        <img src="assets/logo.png" alt="Pick My Shoot" style="height: 44px; width: auto; object-fit: contain;">
+      </div>
+      
+      <!-- Primary Tabs Menu -->
+      <nav>
+        <ul class="nav-links">
+          <li class="nav-link active" data-tab="discover" onclick="switchTab('discover')">Discover</li>
+          <li class="nav-link" data-tab="map" onclick="switchTab('map')">Map</li>
+          <li class="nav-link" data-tab="schedule" onclick="switchTab('schedule')">My Shoots</li>
+          <li class="nav-link" data-tab="account" onclick="switchTab('account')">Account</li>
+        </ul>
+      </nav>
+
+      <!-- User Profile and Quick Utilities -->
+      <div class="header-right">
+        <div class="user-profile-menu" onclick="switchTab('account')">
+          <div style="text-align: right; margin-right: 8px;">
+            <div style="font-weight: 700; font-size: 14px;" id="header-user-name">Marcus Lopez</div>
+            <div style="font-size: 11px; color: var(--grey-text); font-weight: 600;">Customer</div>
+          </div>
+          <div class="schedule-date-box flex-center" style="width: 40px; height: 40px; border-radius: 50%; padding: 0; background: var(--primary-light); border-color: transparent; color: var(--primary-color);">ML</div>
+        </div>
+        <button class="icon-btn" onclick="logout()" title="Logout" style="margin-left: 8px;">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- ==================== TABS CONTENT PANES ==================== -->
+
+    <!-- TAB 1: DISCOVER -->
+    <section id="tab-discover" class="tab-pane">
+      <div style="padding: 40px 0;">
+        <div class="welcome-section" style="margin-bottom: 32px;">
+          <h2>Book an Elite Photographer</h2>
+          <p>Instantly secure top-tier local artists for any shoot category.</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="card" style="padding: 16px; margin-bottom: 40px;">
+          <div style="display: grid; grid-template-columns: 2fr 1.5fr 1fr; gap: 16px;">
+            <div class="form-group" style="margin: 0; position: relative;">
+              <input type="text" id="discover-search-input" placeholder="Search by name, specialties, keyword..." style="padding-left: 40px; height: 50px; border-radius: var(--border-radius-md);" oninput="filterPhotographers()">
+              <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 16px; top: 18px; color: var(--grey-text);"></i>
+            </div>
+            <div class="form-group" style="margin: 0; position: relative;">
+              <input type="text" id="discover-loc-input" placeholder="Location (e.g. Brooklyn, NY)" style="padding-left: 40px; height: 50px; border-radius: var(--border-radius-md);" oninput="filterPhotographers()">
+              <i class="fa-solid fa-location-dot" style="position: absolute; left: 16px; top: 18px; color: var(--grey-text);"></i>
+            </div>
+            <button class="btn btn-primary" onclick="filterPhotographers()" style="height: 50px;">Search Partners</button>
+          </div>
+        </div>
+
+        <!-- Shoot Categories Grid -->
+        <div class="category-scroll-wrapper">
+          <h3 style="font-size: 20px; margin-bottom: 20px;">Browse by Specialty</h3>
+          <div class="discover-categories-grid">
+            
+            <div class="category-card" onclick="setSpecialtyFilter('Wedding')">
+              <img src="assets/harrington_wedding.png" alt="Weddings">
+              <div class="category-card-overlay">
+                <h4>Weddings</h4>
+                <p>Timeless romance, cinematic scale</p>
+              </div>
+            </div>
+            
+            <div class="category-card" onclick="setSpecialtyFilter('Portrait')">
+              <img src="assets/portfolio_4.png" alt="Portraits">
+              <div class="category-card-overlay">
+                <h4>Portraits</h4>
+                <p>Headshots, modeling, personal branding</p>
+              </div>
+            </div>
+
+            <div class="category-card" onclick="setSpecialtyFilter('Street Fashion')">
+              <img src="assets/portfolio_1.png" alt="Fashion">
+              <div class="category-card-overlay">
+                <h4>Street & Fashion</h4>
+                <p>Editorial trends, urban narratives</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Photographers list -->
+        <div>
+          <div class="card-title-bar">
+            <h3 style="font-size: 22px;">Available Photographers</h3>
+            <span class="muted" id="partners-count-text">2 photography partners available</span>
+          </div>
+
+          <div class="photographers-list" id="photographers-list-container">
+            <!-- Dynamic elements loaded via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: MAP / FIND NEARBY -->
+    <section id="tab-map" class="tab-pane hidden" style="max-width: 100%; width: 100%; padding: 0;">
+      <div class="map-view-container">
+        
+        <!-- Interactive Vector Map pane -->
+        <div class="map-pane">
+          <!-- Demand Heatmap Floating Box -->
+          <div class="heatmap-indicator-card" style="width: 240px;">
+            <h4>Photographer Map</h4>
+            <p class="muted" style="font-size: 11px; margin-bottom: 12px;">Active photographers in your area.</p>
+            <div class="heatmap-legend-item">
+              <div class="heatmap-legend-color" style="background-color: var(--primary-color);"></div>
+              <span>Julian Vane (450/hr)</span>
+            </div>
+            <div class="heatmap-legend-item">
+              <div class="heatmap-legend-color" style="background-color: var(--info-color);"></div>
+              <span>Elena Rodriguez (300/hr)</span>
+            </div>
+          </div>
+
+          <!-- Custom styled Map layout using SVG -->
+          <svg class="map-svg-background" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+            <rect width="800" height="800" fill="#202022" />
+            <!-- Water Body -->
+            <path d="M 0 0 Q 300 200 400 450 T 800 800 L 0 800 Z" fill="#1b2330" opacity="0.8"/>
+            <!-- Roads Grid -->
+            <g stroke="#3a3a3c" stroke-width="2" opacity="0.6">
+              <line x1="0" y1="100" x2="800" y2="100" />
+              <line x1="0" y1="200" x2="800" y2="200" stroke-width="3" />
+              <line x1="0" y1="300" x2="800" y2="300" />
+              <line x1="0" y1="400" x2="800" y2="400" />
+              <line x1="0" y1="500" x2="800" y2="500" stroke-width="4" />
+              <line x1="0" y1="600" x2="800" y2="600" />
+              <line x1="0" y1="700" x2="800" y2="700" />
+              <line x1="100" y1="0" x2="100" y2="800" />
+              <line x1="200" y1="0" x2="200" y2="800" stroke-width="3" />
+              <line x1="300" y1="0" x2="300" y2="800" />
+              <line x1="400" y1="0" x2="400" y2="800" />
+              <line x1="500" y1="0" x2="500" y2="800" stroke-width="4" />
+              <line x1="600" y1="0" x2="600" y2="800" />
+              <line x1="700" y1="0" x2="700" y2="800" />
+            </g>
+          </svg>
+
+          <!-- HTML Markers Overlay Container -->
+          <div id="customer-map-markers-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
+            <!-- Map pins representing photographer locations -->
+          </div>
+
+          <!-- Map controls -->
+          <div class="map-controls">
+            <div class="map-control-btn" onclick="showToast('Zoom In', 'info')"><i class="fa-solid fa-plus"></i></div>
+            <div class="map-control-btn" onclick="showToast('Zoom Out', 'info')"><i class="fa-solid fa-minus"></i></div>
+            <div class="map-control-btn" onclick="showToast('Map centered to GPS', 'info')"><i class="fa-solid fa-crosshairs"></i></div>
+          </div>
+        </div>
+
+        <!-- Sidebar Panel: Photographer Quick Cards -->
+        <div class="map-sidebar">
+          <div class="map-sidebar-header" style="border-bottom: none; padding-bottom: 8px;">
+            <div class="map-sidebar-title-bar" style="margin-bottom: 0;">
+              <h3>Photographers Nearby</h3>
+              <span class="map-counter-badge">2 ACTIVE NOW</span>
+            </div>
+          </div>
+
+          <div class="map-requests-list" id="customer-map-photographers-list">
+            <!-- Dynamic elements loaded via JS -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 3: CUSTOMER SCHEDULE / BOOKINGS -->
+    <section id="tab-schedule" class="tab-pane hidden">
+      <div style="padding: 40px 0; max-width: 900px; margin: 0 auto;">
+        <div class="welcome-section" style="margin-bottom: 32px;">
+          <h2>Your Shoot Bookings</h2>
+          <p>Track statuses, session timings, and coordinate details with partners.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 20px;" id="customer-bookings-list-container">
+          <!-- Dynamic bookings injected via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: CUSTOMER ACCOUNT -->
+    <section id="tab-account" class="tab-pane hidden">
+      <div class="account-container" style="grid-template-columns: 1.2fr 1.8fr; max-width: 1100px; margin: 0 auto;">
+        
+        <!-- Left details column -->
+        <div style="display: flex; flex-direction: column; gap: 32px;">
+          <div class="profile-card">
+            <div class="schedule-date-box flex-center" style="width: 100px; height: 100px; font-size: 36px; border-radius: 50%; margin-bottom: 20px; background: var(--primary-light); border: none; color: var(--primary-color);">ML</div>
+            <h3 id="customer-name-display">Marcus Lopez</h3>
+            <p class="tagline" id="customer-email-display">marcus@gmail.com</p>
+            <div class="profile-skills-row" style="margin-bottom: 0;">
+              <span class="profile-skill-badge" style="background-color: var(--primary-light); color: var(--primary-color); border: none; font-weight: 700;">Customer Tier: Elite Pro</span>
+            </div>
+          </div>
+
+          <!-- Spendings statistics -->
+          <div class="card">
+            <div class="card-title-bar">
+              <h3 style="font-size: 18px;">Spending Summary</h3>
+              <i class="fa-solid fa-chart-line" style="color: var(--grey-text);"></i>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--grey-border); padding-bottom: 10px;">
+                <span class="muted" style="font-weight: 600;">Total Shoots Booked</span>
+                <span style="font-weight: 800;" id="spend-total-shoots">2</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding-bottom: 4px;">
+                <span class="muted" style="font-weight: 600;">Total Investment</span>
+                <span style="font-weight: 800; color: var(--primary-color); font-size: 18px;" id="spend-total-amount">₹1,650</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Payment details column -->
+        <div style="display: flex; flex-direction: column; gap: 32px;">
+          <!-- Payment cards -->
+          <div class="card">
+            <div class="card-title-bar">
+              <h3>Saved Payment Methods</h3>
+              <button class="btn btn-primary" onclick="showToast('Add card portal opening...', 'info')" style="padding: 6px 14px; font-size: 12px;">+ Add Card</button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 8px;">
+              <div class="service-item" style="border-left: 4px solid var(--info-color);">
+                <div class="service-item-left" style="display: flex; align-items: center; gap: 16px;">
+                  <i class="fa-brands fa-cc-visa" style="font-size: 32px; color: var(--info-color);"></i>
+                  <div>
+                    <h4 style="font-size: 14px;">Visa Premium Card Ending 4022</h4>
+                    <p style="font-size: 11px;">Expires 09/2028</p>
+                  </div>
+                </div>
+                <span class="badge" style="background-color: var(--success-light); color: var(--success-color);">PRIMARY</span>
+              </div>
+              
+              <div class="service-item">
+                <div class="service-item-left" style="display: flex; align-items: center; gap: 16px;">
+                  <i class="fa-brands fa-cc-mastercard" style="font-size: 32px; color: var(--warning-color);"></i>
+                  <div>
+                    <h4 style="font-size: 14px;">Mastercard Business Ending 8810</h4>
+                    <p style="font-size: 11px;">Expires 11/2027</p>
+                  </div>
+                </div>
+                <span class="muted" style="font-size: 12px; cursor: pointer;" onclick="showToast('Selected as primary card', 'success')">Set Default</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Configuration blocks -->
+          <div class="card">
+            <div class="card-title-bar">
+              <h3>Account Settings</h3>
+            </div>
+            <div class="settings-list">
+              <div class="settings-item" onclick="showToast('Personal info details loading...', 'info')">
+                <div class="settings-item-left">
+                  <i class="fa-regular fa-user"></i>
+                  <span>Profile Information</span>
+                </div>
+                <i class="fa-solid fa-chevron-right"></i>
+              </div>
+              <div class="settings-item" onclick="showToast('Password credentials screen loading...', 'info')">
+                <div class="settings-item-left">
+                  <i class="fa-solid fa-shield-halved"></i>
+                  <span>Password & Security</span>
+                </div>
+                <i class="fa-solid fa-chevron-right"></i>
+              </div>
+              <div class="settings-item" onclick="showToast('Addresses saved loading...', 'info')">
+                <div class="settings-item-left">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <span>Manage Studio Addresses</span>
+                </div>
+                <i class="fa-solid fa-chevron-right"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== BOOKING REQUEST POPUP MODAL ==================== -->
+  <div class="modal-overlay" id="book-photographer-modal">
+    <div class="modal-content" style="width: 550px;">
+      <div class="modal-header">
+        <h3 id="bm-header-title">Request Photography Session</h3>
+        <button class="modal-close" onclick="closeBookModal()">&times;</button>
+      </div>
+      <form onsubmit="handleBookSubmit(event)">
+        <div class="modal-body">
+          <input type="hidden" id="bm-photographer-id">
+          
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--grey-border); padding-bottom: 16px;">
+            <img src="assets/julian_profile.png" id="bm-photo-avatar" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+            <div>
+              <h4 id="bm-photo-name" style="font-size: 16px;">Julian Vane</h4>
+              <p id="bm-photo-rate" style="font-size: 13px; color: var(--primary-color); font-weight: 700;">₹450 / hour</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="bm-shoot-title">Shoot Theme / Event Description</label>
+            <input type="text" id="bm-shoot-title" required placeholder="e.g. Wedding Reception, Corporate Portrait">
+          </div>
+
+          <div class="form-group">
+            <label for="bm-shoot-category">Shoot Category</label>
+            <select id="bm-shoot-category" onchange="updateEstimatedPrice()">
+              <option value="Wedding">Wedding Shoot</option>
+              <option value="Portrait">Portrait Session</option>
+              <option value="Street Fashion">Street & Fashion</option>
+              <option value="Real Estate">Real Estate</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px;">
+            <div>
+              <label for="bm-shoot-date">Date</label>
+              <input type="date" id="bm-shoot-date" required value="2023-10-24">
+            </div>
+            <div>
+              <label for="bm-shoot-duration">Duration (Hours)</label>
+              <input type="number" id="bm-shoot-duration" required value="3" min="1" oninput="updateEstimatedPrice()">
+            </div>
+          </div>
+
+          <div class="form-group" style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 12px;">
+            <div>
+              <label for="bm-shoot-time">Start Time</label>
+              <input type="time" id="bm-shoot-time" required value="14:00">
+            </div>
+            <div>
+              <label for="bm-shoot-location">Location Venue Address</label>
+              <input type="text" id="bm-shoot-location" required placeholder="Belmond Manor, NY">
+            </div>
+          </div>
+
+          <div class="booking-summary-box">
+            <div class="booking-summary-row">
+              <span class="muted">Hourly Partner Rate</span>
+              <span id="summary-hourly-rate">₹450.00</span>
+            </div>
+            <div class="booking-summary-row">
+              <span class="muted">Duration</span>
+              <span id="summary-duration">3 Hours</span>
+            </div>
+            <div class="booking-summary-row">
+              <span class="muted">Service Fee</span>
+              <span>₹0.00</span>
+            </div>
+            <div class="booking-summary-row">
+              <span>Total Estimated Investment</span>
+              <span class="primary-text" id="summary-total-price">₹1,350.00</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeBookModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Book Partner Now</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Shared Application scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/customer.js"></script>
+</body>
+</html>

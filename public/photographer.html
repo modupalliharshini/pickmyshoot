@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photographer Partner Portal | Pick My Shoot</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Icon Libraries -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header>
+    <div class="container header-wrapper">
+      <div class="logo">
+        <img src="assets/logo.png" alt="Pick My Shoot" style="height: 44px; width: auto; object-fit: contain;">
+      </div>
+      
+      <!-- Primary Tabs Menu -->
+      <nav>
+        <ul class="nav-links">
+          <li class="nav-link active" data-tab="discover" onclick="switchTab('discover')">Discover</li>
+          <li class="nav-link" data-tab="map" onclick="switchTab('map')">Map</li>
+          <li class="nav-link" data-tab="schedule" onclick="switchTab('schedule')">Schedule</li>
+          <li class="nav-link" data-tab="account" onclick="switchTab('account')">Account</li>
+        </ul>
+      </nav>
+
+      <!-- User Profile and Quick Utilities -->
+      <div class="header-right">
+        <div class="search-bar-header">
+          <input type="text" placeholder="Search sessions...">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <button class="icon-btn" onclick="showToast('No new notifications', 'info')">
+          <i class="fa-regular fa-bell"></i>
+          <span class="icon-badge" id="notification-badge-count">3</span>
+        </button>
+        <div class="user-profile-menu" onclick="switchTab('account')">
+          <img src="assets/julian_profile.png" alt="Profile" class="user-avatar" id="header-avatar">
+        </div>
+        <button class="icon-btn" onclick="logout()" title="Logout" style="margin-left: 8px;">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- ==================== TABS CONTENT PANES ==================== -->
+
+    <!-- TAB 1: DISCOVER / DASHBOARD -->
+    <section id="tab-discover" class="tab-pane">
+      <div class="dashboard-grid">
+        
+        <!-- Left Panel: Requests -->
+        <div class="dashboard-left">
+          <div class="welcome-section">
+            <h2 id="welcome-message">Welcome back, Marcus</h2>
+            <p>You have <span class="primary-text" id="pending-requests-count">2</span> new booking requests and <span id="weekly-shoots-count">5</span> shoots scheduled for this week.</p>
+          </div>
+
+          <!-- Pending Booking Requests list -->
+          <div class="card" style="box-shadow: none; border: none; background: transparent; padding: 0;">
+            <div class="card-title-bar">
+              <h3 style="display: flex; align-items: center; gap: 8px;">
+                New Requests <span class="badge badge-danger" id="new-badge" style="font-size: 10px;">2 NEW</span>
+              </h3>
+            </div>
+            
+            <div id="booking-requests-list" style="display: flex; flex-direction: column; gap: 20px;">
+              <!-- Dynamic requests list injected by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Panel: Sidebar Stats -->
+        <div class="dashboard-right">
+          
+          <!-- Current Earnings widget -->
+          <div class="earnings-card">
+            <div class="earnings-info">
+              <h4>Current Earnings</h4>
+              <div class="amount" id="dashboard-earnings-amount">$2,450.00</div>
+            </div>
+            <div class="earnings-icon-bg flex-center">
+              <i class="fa-solid fa-wallet"></i>
+            </div>
+          </div>
+
+          <!-- Weekly Schedule mini list -->
+          <div class="card">
+            <div class="card-title-bar">
+              <h3>Weekly Schedule</h3>
+              <a href="#" class="view-link" onclick="switchTab('schedule')">View Calendar</a>
+            </div>
+            <div class="schedule-list" id="weekly-schedule-list">
+              <!-- Dynamic weekly schedule injected by JS -->
+            </div>
+          </div>
+
+          <!-- Post-Processing progress tracking -->
+          <div class="card">
+            <div class="card-title-bar">
+              <h3>Post-Processing</h3>
+            </div>
+            <div class="processing-list">
+              <div class="processing-item">
+                <div class="processing-header">
+                  <span>Vogue Editorial - Selection</span>
+                  <span class="primary-text">80%</span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar" style="width: 80%;"></div>
+                </div>
+              </div>
+              <div class="processing-item">
+                <div class="processing-header">
+                  <span>Smith Family - Retouching</span>
+                  <span>30%</span>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar" style="width: 30%; background-color: var(--grey-text);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Leica Gear Promo Banner -->
+          <div class="promo-banner" style="background-image: url('assets/leica_gear.png');">
+            <div class="promo-content">
+              <h4>Upgrade Gear</h4>
+              <p>Exclusive 20% discount on Leica lenses for PickMyShoot Pros.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: MAP / HEATMAP -->
+    <section id="tab-map" class="tab-pane hidden" style="max-width: 100%; width: 100%; padding: 0;">
+      <div class="map-view-container">
+        
+        <!-- Interactive Vector Map pane -->
+        <div class="map-pane">
+          <!-- Demand Heatmap Floating Box -->
+          <div class="heatmap-indicator-card">
+            <h4>Demand Heatmap</h4>
+            <div class="heatmap-legend-item">
+              <div class="heatmap-legend-color" style="background-color: var(--primary-color);"></div>
+              <span>Peak Hotspot</span>
+            </div>
+            <div class="heatmap-legend-item">
+              <div class="heatmap-legend-color" style="background-color: var(--warning-color);"></div>
+              <span>Rising Activity</span>
+            </div>
+            <div class="heatmap-legend-item">
+              <div class="heatmap-legend-color" style="background-color: var(--info-color);"></div>
+              <span>Public Requests</span>
+            </div>
+          </div>
+
+          <!-- Custom styled Map layout using SVG -->
+          <svg class="map-svg-background" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+            <rect width="800" height="800" fill="#202022" />
+            <!-- Water Body -->
+            <path d="M 0 0 Q 300 200 400 450 T 800 800 L 0 800 Z" fill="#1b2330" opacity="0.8"/>
+            <!-- Roads Grid -->
+            <g stroke="#3a3a3c" stroke-width="2" opacity="0.6">
+              <!-- Horizontal streets -->
+              <line x1="0" y1="100" x2="800" y2="100" />
+              <line x1="0" y1="200" x2="800" y2="200" stroke-width="3" />
+              <line x1="0" y1="300" x2="800" y2="300" />
+              <line x1="0" y1="400" x2="800" y2="400" />
+              <line x1="0" y1="500" x2="800" y2="500" stroke-width="4" />
+              <line x1="0" y1="600" x2="800" y2="600" />
+              <line x1="0" y1="700" x2="800" y2="700" />
+              <!-- Vertical avenues -->
+              <line x1="100" y1="0" x2="100" y2="800" />
+              <line x1="200" y1="0" x2="200" y2="800" stroke-width="3" />
+              <line x1="300" y1="0" x2="300" y2="800" />
+              <line x1="400" y1="0" x2="400" y2="800" />
+              <line x1="500" y1="0" x2="500" y2="800" stroke-width="4" />
+              <line x1="600" y1="0" x2="600" y2="800" />
+              <line x1="700" y1="0" x2="700" y2="800" />
+            </g>
+            <!-- Highlighted Bridges -->
+            <rect x="290" y="195" width="20" height="10" fill="#4e4e50" opacity="0.8"/>
+            <rect x="490" y="495" width="20" height="10" fill="#4e4e50" opacity="0.8"/>
+          </svg>
+
+          <!-- Heatmap Spot Overlays (Gradients) -->
+          <div class="heatmap-overlay" style="top: 300px; left: 300px; background: radial-gradient(circle, rgba(255,59,48,0.4) 0%, rgba(255,59,48,0) 70%);"></div>
+          <div class="heatmap-overlay" style="top: 150px; left: 150px; background: radial-gradient(circle, rgba(255,149,0,0.3) 0%, rgba(255,149,0,0) 70%);"></div>
+          <div class="heatmap-overlay" style="top: 550px; left: 100px; background: radial-gradient(circle, rgba(0,122,255,0.35) 0%, rgba(0,122,255,0) 70%);"></div>
+          <div class="heatmap-overlay" style="top: 100px; left: 450px; background: radial-gradient(circle, rgba(255,59,48,0.2) 0%, rgba(255,59,48,0) 70%);"></div>
+
+          <!-- HTML Markers Overlay Container -->
+          <div id="map-markers-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
+            <!-- Map pins injected dynamically by JS -->
+          </div>
+
+          <!-- Map controls -->
+          <div class="map-controls">
+            <div class="map-control-btn" onclick="showToast('Zoom In', 'info')"><i class="fa-solid fa-plus"></i></div>
+            <div class="map-control-btn" onclick="showToast('Zoom Out', 'info')"><i class="fa-solid fa-minus"></i></div>
+            <div class="map-control-btn" onclick="recenterMap()"><i class="fa-solid fa-crosshairs"></i></div>
+          </div>
+        </div>
+
+        <!-- Sidebar Panel: Requests Details -->
+        <div class="map-sidebar">
+          <div class="map-sidebar-header">
+            <div class="map-sidebar-title-bar">
+              <h3>Nearby Requests</h3>
+              <span class="map-counter-badge" id="open-requests-count">12 OPEN</span>
+            </div>
+            
+            <!-- Filter box -->
+            <div class="map-filter-input">
+              <input type="text" id="map-search-input" placeholder="Filter by shoot type..." oninput="filterMapRequests()">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <!-- Filters row tags -->
+            <div class="category-pills-row" id="map-category-pills">
+              <div class="category-pill active" onclick="setMapCategoryFilter('all')">All Types</div>
+              <div class="category-pill" onclick="setMapCategoryFilter('Portrait')">Portraits</div>
+              <div class="category-pill" onclick="setMapCategoryFilter('Event')">Events</div>
+              <div class="category-pill" onclick="setMapCategoryFilter('Real Estate')">Real Estate</div>
+            </div>
+          </div>
+
+          <!-- Nearby requests dynamic list -->
+          <div class="map-requests-list" id="map-requests-list">
+            <!-- Dynamic elements loaded via JS -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 3: SCHEDULE / CALENDAR -->
+    <section id="tab-schedule" class="tab-pane hidden">
+      <div class="schedule-container">
+        
+        <!-- Left Sidebar: Datepicker calendar + filters -->
+        <div class="schedule-sidebar">
+          
+          <!-- October 2023 calendar mock -->
+          <div class="calendar-widget">
+            <div class="calendar-header">
+              <span>October 2023</span>
+              <div style="display: flex; gap: 12px; color: var(--grey-text); cursor: pointer;">
+                <i class="fa-solid fa-chevron-left" onclick="showToast('Previous month', 'info')"></i>
+                <i class="fa-solid fa-chevron-right" onclick="showToast('Next month', 'info')"></i>
+              </div>
+            </div>
+            <div class="calendar-grid">
+              <div class="calendar-day-header">M</div>
+              <div class="calendar-day-header">T</div>
+              <div class="calendar-day-header">W</div>
+              <div class="calendar-day-header">T</div>
+              <div class="calendar-day-header">F</div>
+              <div class="calendar-day-header">S</div>
+              <div class="calendar-day-header">S</div>
+              
+              <!-- Empty spacer slots for calendar alignment -->
+              <div class="calendar-day-num empty">25</div>
+              <div class="calendar-day-num empty">26</div>
+              <div class="calendar-day-num empty">27</div>
+              <div class="calendar-day-num empty">28</div>
+              <div class="calendar-day-num empty">29</div>
+              <div class="calendar-day-num empty">30</div>
+              <!-- Oct 1 -->
+              <div class="calendar-day-num" onclick="selectCalendarDate(1)">1</div>
+              <!-- Row 2 -->
+              <div class="calendar-day-num" onclick="selectCalendarDate(2)">2</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(3)">3</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(4)">4</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(5)">5</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(6)">6</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(7)">7</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(8)">8</div>
+              <!-- Row 3 -->
+              <div class="calendar-day-num" onclick="selectCalendarDate(9)">9</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(10)">10</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(11)">11</div>
+              <div class="calendar-day-num active" onclick="selectCalendarDate(12)" id="calendar-day-12">12</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(13)">13</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(14)">14</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(15)">15</div>
+              <!-- Row 4 -->
+              <div class="calendar-day-num" onclick="selectCalendarDate(16)">16</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(17)">17</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(18)">18</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(19)">19</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(20)">20</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(21)">21</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(22)">22</div>
+              <!-- Row 5 -->
+              <div class="calendar-day-num" onclick="selectCalendarDate(23)">23</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(24)">24</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(25)">25</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(26)">26</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(27)">27</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(28)">28</div>
+              <div class="calendar-day-num" onclick="selectCalendarDate(29)">29</div>
+            </div>
+          </div>
+
+          <!-- Shoot Types checklist filter -->
+          <div class="filter-group-box">
+            <h4>Shoot Types</h4>
+            <label class="checkbox-label">
+              <input type="checkbox" checked onchange="toggleScheduleFilter('Portrait', this.checked)">
+              <span>Portraits</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" checked onchange="toggleScheduleFilter('Commercial', this.checked)">
+              <span>Commercial</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" checked onchange="toggleScheduleFilter('Wedding', this.checked)">
+              <span>Weddings</span>
+            </label>
+          </div>
+
+          <!-- Connected Calendars toggle list -->
+          <div class="filter-group-box">
+            <h4>Calendars</h4>
+            <label class="checkbox-label" style="justify-content: space-between; width: 100%;">
+              <span style="display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-circle" style="color: var(--info-color); font-size: 10px;"></i> Google Calendar
+              </span>
+              <i class="fa-regular fa-eye" style="color: var(--grey-text);"></i>
+            </label>
+            <label class="checkbox-label" style="justify-content: space-between; width: 100%;">
+              <span style="display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-circle" style="color: var(--primary-color); font-size: 10px;"></i> Pick My Shoot Pro
+              </span>
+              <i class="fa-regular fa-eye" style="color: var(--grey-text);"></i>
+            </label>
+          </div>
+
+        </div>
+
+        <!-- Right Timeline Area -->
+        <div class="schedule-timeline-main">
+          
+          <div class="timeline-card">
+            <!-- Timeline controls header -->
+            <div class="timeline-header">
+              <div class="timeline-title-area">
+                <h3 id="schedule-timeline-title">Thursday, Oct 12</h3>
+                <p>Managing 12 upcoming shoots this week.</p>
+              </div>
+              <div style="display: flex; gap: 16px; align-items: center;">
+                <div class="timeline-controls">
+                  <button class="timeline-tab-btn active" onclick="toggleTimelineMode('day')">Day</button>
+                  <button class="timeline-tab-btn" onclick="toggleTimelineMode('week')">Week</button>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn btn-secondary btn-icon" onclick="showToast('Synchronizing calendars...', 'success')"><i class="fa-solid fa-arrows-rotate"></i></button>
+                  <button class="btn btn-secondary btn-icon" onclick="openBlockTimeModal()"><i class="fa-solid fa-lock"></i></button>
+                  <button class="btn btn-primary" onclick="openNewBookingModal()" style="padding: 10px 20px;"><i class="fa-solid fa-plus"></i> New Booking</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic hourly slots grid -->
+            <div class="timeline-grid" id="timeline-hourly-grid">
+              <!-- Dynamically rendered by JS script -->
+            </div>
+          </div>
+
+          <!-- Bottom Schedule Checklist widgets -->
+          <div class="schedule-bottom-widgets">
+            
+            <!-- Left block: Preparation task list -->
+            <div class="card" style="border-left: 4px solid var(--primary-color);">
+              <div class="card-title-bar" style="margin-bottom: 12px;">
+                <h4 style="font-size: 12px; text-transform: uppercase; color: var(--grey-text);">Preparation Task</h4>
+                <i class="fa-regular fa-clipboard-list" style="color: var(--primary-color); font-size: 20px;"></i>
+              </div>
+              <div id="prep-tasks-container">
+                <!-- Injected dynamically via JS -->
+              </div>
+            </div>
+
+            <!-- Right block: Client Outreach card -->
+            <div class="card" style="border-left: 4px solid var(--info-color);">
+              <div class="card-title-bar" style="margin-bottom: 12px;">
+                <h4 style="font-size: 12px; text-transform: uppercase; color: var(--grey-text);">Client Outreach</h4>
+                <i class="fa-solid fa-users" style="color: var(--info-color); font-size: 20px;"></i>
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                  <div class="schedule-date-box" style="width: 44px; height: 44px; justify-content: center; padding: 0;">JD</div>
+                  <div>
+                    <h4 style="font-size: 15px;">James D. - Commercial Shoot</h4>
+                    <p style="font-size: 13px; color: var(--grey-text);">Confirm final gear list and lighting setup for Friday's session.</p>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn btn-outline" style="padding: 8px 16px; font-size: 12px;" onclick="showToast('Outreach calls initiated', 'success')">CALL NOW</button>
+                  <button class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px;" onclick="showToast('Outreach snoozed for later', 'info')">LATER</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 4: ACCOUNT / PROFILE -->
+    <section id="tab-account" class="tab-pane hidden">
+      <div class="account-container">
+        
+        <!-- Left: Bio & Services -->
+        <div style="display: flex; flex-direction: column; gap: 32px;">
+          <!-- Profile Quick Details Card -->
+          <div class="profile-card">
+            <div class="profile-avatar-wrapper">
+              <img src="assets/julian_profile.png" alt="Julian Vane" class="profile-avatar-large" id="profile-avatar-display">
+              <label class="avatar-edit-btn" for="avatar-upload-input" title="Upload profile photo">
+                <i class="fa-solid fa-pencil"></i>
+              </label>
+              <input type="file" id="avatar-upload-input" style="display: none;" accept="image/*" onchange="handleAvatarUpload(event)">
+            </div>
+            <h3 id="profile-name-display">Julian Vane</h3>
+            <p class="tagline" id="profile-title-display">Editorial & Commercial Photographer based in Brooklyn, NY</p>
+            
+            <div class="profile-skills-row" id="profile-skills-tags">
+              <span class="profile-skill-badge">Portrait</span>
+              <span class="profile-skill-badge">Street Fashion</span>
+              <span class="profile-skill-badge">Architecture</span>
+            </div>
+
+            <div class="profile-actions-row">
+              <button class="btn btn-outline" onclick="showToast('Sharing public URL...', 'success')">View Public Profile</button>
+              <button class="btn btn-primary" onclick="showToast('Portfolio link copied to clipboard!', 'success')">Share Portfolio</button>
+            </div>
+          </div>
+
+          <!-- Bio block -->
+          <div class="card">
+            <div class="card-title-bar">
+              <h3 style="font-size: 18px;">Professional Bio</h3>
+              <i class="fa-regular fa-pen-to-square" style="color: var(--grey-text); cursor: pointer;" onclick="editBio()"></i>
+            </div>
+            <p style="font-size: 14px; color: #48484a;" id="profile-bio-display">
+              Specializing in high-contrast editorial photography with a focus on urban narratives. Over 10 years of experience working with luxury brands and international publications. I bring a cinematic lens to everyday moments.
+            </p>
+          </div>
+
+          <!-- Services pricing -->
+          <div class="card">
+            <div class="card-title-bar">
+              <h3 style="font-size: 18px;">Services & Pricing</h3>
+              <a href="#" class="view-link" onclick="openNewServiceModal()">+ New</a>
+            </div>
+            <div class="service-list" id="profile-services-list">
+              <!-- Loaded dynamically via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle: Portfolio Gallery Management -->
+        <div class="card" style="display: flex; flex-direction: column;">
+          <div class="card-title-bar">
+            <h3>Portfolio Management</h3>
+            <div>
+              <label class="btn btn-primary" for="portfolio-upload-input" style="padding: 8px 16px; cursor: pointer; font-size: 13px;">
+                <i class="fa-solid fa-upload"></i> Upload Photo
+              </label>
+              <input type="file" id="portfolio-upload-input" style="display: none;" multiple accept="image/*" onchange="handlePortfolioUpload(event)">
+            </div>
+          </div>
+          <p class="muted" style="font-size: 13px; margin-bottom: 24px;" id="portfolio-count-text">24 total assets featured</p>
+          
+          <div class="portfolio-grid" id="profile-portfolio-grid">
+            <!-- Dynamic elements loaded via JS -->
+          </div>
+        </div>
+
+        <!-- Right: Ledger / Balances & Configurations -->
+        <div style="display: flex; flex-direction: column; gap: 32px;">
+          <!-- Wallet box -->
+          <div class="card" style="background-color: var(--dark-color); color: var(--white); border: none;">
+            <p style="text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em; color: var(--grey-light-text); margin-bottom: 4px;">Available Balance</p>
+            <h2 style="color: var(--white); font-size: 36px; margin-bottom: 24px;" id="account-wallet-amount">$4,850.00</h2>
+            <button class="btn btn-primary" style="width: 100%; font-weight: 700; height: 48px;" onclick="triggerPayout()">
+              <i class="fa-solid fa-building-columns"></i> Payout Now
+            </button>
+          </div>
+
+          <!-- Activity log -->
+          <div class="card">
+            <div class="card-title-bar">
+              <h3 style="font-size: 18px;">Recent Activity</h3>
+            </div>
+            <div class="activity-list" id="account-activity-list">
+              <!-- Loaded dynamically via JS -->
+            </div>
+            <a href="#" class="view-link text-center" style="display: block; margin-top: 16px;" onclick="showToast('Ledger ledger history loading...', 'info')">View Detailed Ledger</a>
+          </div>
+
+          <!-- Configuration blocks -->
+          <div class="card">
+            <div class="card-title-bar">
+              <h3 style="font-size: 18px;">Account Settings</h3>
+            </div>
+            <div class="settings-list">
+              <div class="settings-item" onclick="showToast('Identity verification is complete.', 'success')">
+                <div class="settings-item-left">
+                  <i class="fa-regular fa-circle-check" style="color: var(--success-color);"></i>
+                  <span>Identity Verification</span>
+                </div>
+                <i class="fa-solid fa-chevron-right"></i>
+              </div>
+              <div class="settings-item" onclick="showToast('Configure availability hours', 'info')">
+                <div class="settings-item-left">
+                  <i class="fa-regular fa-clock"></i>
+                  <span>Availability Rules</span>
+                </div>
+                <i class="fa-solid fa-chevron-right"></i>
+              </div>
+              <div class="settings-item" onclick="showToast('Configure notification channels', 'info')">
+                <div class="settings-item-left">
+                  <i class="fa-regular fa-bell"></i>
+                  <span>Notification Preferences</span>
+                </div>
+                <i class="fa-solid fa-chevron-right"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== MODALS POPUPS ==================== -->
+
+  <!-- MODAL: BLOCK TIME -->
+  <div class="modal-overlay" id="block-time-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Block Calendar Slot</h3>
+        <button class="modal-close" onclick="closeBlockTimeModal()">&times;</button>
+      </div>
+      <form onsubmit="handleBlockTimeSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="block-title">Reason / Event Name</label>
+            <input type="text" id="block-title" required placeholder="Studio Maintenance, Lens Calibration...">
+          </div>
+          <div class="form-group">
+            <label for="block-date">Date</label>
+            <input type="date" id="block-date" required value="2023-10-12">
+          </div>
+          <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <label for="block-start">Start Time</label>
+              <input type="time" id="block-start" required value="09:00">
+            </div>
+            <div>
+              <label for="block-end">End Time</label>
+              <input type="time" id="block-end" required value="10:30">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeBlockTimeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Lock Time Slot</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: CREATE MANUAL BOOKING -->
+  <div class="modal-overlay" id="new-booking-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Booking Reservation</h3>
+        <button class="modal-close" onclick="closeNewBookingModal()">&times;</button>
+      </div>
+      <form onsubmit="handleManualBookingSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="mb-title">Shoot Description</label>
+            <input type="text" id="mb-title" required placeholder="Studio Headshots, Commercial Shoot...">
+          </div>
+          <div class="form-group">
+            <label for="mb-client">Client Name</label>
+            <input type="text" id="mb-client" required placeholder="Johnathan Doe">
+          </div>
+          <div class="form-group">
+            <label for="mb-category">Shoot Category</label>
+            <select id="mb-category">
+              <option value="Portrait">Portrait</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Wedding">Wedding</option>
+              <option value="Real Estate">Real Estate</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mb-date">Date</label>
+            <input type="date" id="mb-date" required value="2023-10-12">
+          </div>
+          <div class="form-group" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px;">
+            <div>
+              <label for="mb-time">Start Time</label>
+              <input type="time" id="mb-time" required value="14:00">
+            </div>
+            <div>
+              <label for="mb-duration">Duration (Hours)</label>
+              <input type="number" id="mb-duration" required value="2" min="1">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="mb-location">Studio Location / Client Address</label>
+            <input type="text" id="mb-location" placeholder="e.g. Skyloft Studios, Studio B">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeNewBookingModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Schedule Booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD CUSTOM SERVICE -->
+  <div class="modal-overlay" id="new-service-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Create Photography Service Package</h3>
+        <button class="modal-close" onclick="closeNewServiceModal()">&times;</button>
+      </div>
+      <form onsubmit="handleNewServiceSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="serv-name">Service Name</label>
+            <input type="text" id="serv-name" required placeholder="e.g., Food & Menu Photography">
+          </div>
+          <div class="form-group">
+            <label for="serv-rate">Price / Rate</label>
+            <input type="text" id="serv-rate" required placeholder="e.g., $350/hr or $1,500 package">
+          </div>
+          <div class="form-group">
+            <label for="serv-desc">Description of Deliverables</label>
+            <textarea id="serv-desc" rows="3" required placeholder="e.g., 3-hour session, 20 high-res retouched images."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeNewServiceModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Service</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Shared Application scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/photographer.js"></script>
+</body>
+</html>
