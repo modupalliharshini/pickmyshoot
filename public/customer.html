@@ -88,7 +88,7 @@
 
         <!-- Search Bar -->
         <div class="card" style="padding: 16px; margin-bottom: 40px;">
-          <div style="display: grid; grid-template-columns: 2fr 1.5fr 1fr; gap: 16px;">
+          <div class="customer-search-grid">
             <div class="form-group" style="margin: 0; position: relative;">
               <input type="text" id="discover-search-input" placeholder="Search by name, specialties, keyword..." style="padding-left: 40px; height: 50px; border-radius: var(--border-radius-md);" oninput="filterPhotographers()">
               <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 16px; top: 18px; color: var(--grey-text);"></i>
@@ -237,7 +237,7 @@
 
     <!-- TAB 4: CUSTOMER ACCOUNT -->
     <section id="tab-account" class="tab-pane hidden">
-      <div class="account-container" style="grid-template-columns: 1.2fr 1.8fr; max-width: 1100px; margin: 0 auto;">
+      <div class="account-container customer-account-container">
         
         <!-- Left details column -->
         <div style="display: flex; flex-direction: column; gap: 32px;">
@@ -419,6 +419,26 @@
           <button type="submit" class="btn btn-primary">Book Partner Now</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Sticky Navigation -->
+  <div class="mobile-bottom-nav">
+    <div class="mobile-nav-item active" data-tab="discover" onclick="switchTab('discover')">
+      <i class="fa-regular fa-compass"></i>
+      <span>Discover</span>
+    </div>
+    <div class="mobile-nav-item" data-tab="map" onclick="switchTab('map')">
+      <i class="fa-regular fa-map"></i>
+      <span>Map</span>
+    </div>
+    <div class="mobile-nav-item" data-tab="schedule" onclick="switchTab('schedule')">
+      <i class="fa-regular fa-calendar-days"></i>
+      <span>My Shoots</span>
+    </div>
+    <div class="mobile-nav-item" data-tab="account" onclick="switchTab('account')">
+      <i class="fa-regular fa-user"></i>
+      <span>Account</span>
     </div>
   </div>
 

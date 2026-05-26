@@ -213,10 +213,18 @@
             <div class="map-control-btn" onclick="showToast('Zoom Out', 'info')"><i class="fa-solid fa-minus"></i></div>
             <div class="map-control-btn" onclick="recenterMap()"><i class="fa-solid fa-crosshairs"></i></div>
           </div>
+          
+          <!-- Floating Camera button for mobile -->
+          <div class="map-floating-action-btn" onclick="showToast('Searching for nearby shoots...', 'info')">
+            <i class="fa-solid fa-camera"></i>
+          </div>
         </div>
 
         <!-- Sidebar Panel: Requests Details -->
         <div class="map-sidebar">
+          <div class="bottom-sheet-handle">
+            <span></span>
+          </div>
           <div class="map-sidebar-header">
             <div class="map-sidebar-title-bar">
               <h3>Nearby Requests</h3>
@@ -249,6 +257,59 @@
 
     <!-- TAB 3: SCHEDULE / CALENDAR -->
     <section id="tab-schedule" class="tab-pane hidden">
+      <!-- Mobile Schedule Header -->
+      <div class="mobile-schedule-header">
+        <h2>Your Schedule</h2>
+        <p>Managing 12 upcoming shoots this week.</p>
+      </div>
+
+      <!-- Mobile Block/Booking actions -->
+      <div class="mobile-schedule-actions">
+        <button class="btn btn-dark" onclick="openBlockTimeModal()"><i class="fa-solid fa-lock"></i> Block Time</button>
+        <button class="btn btn-primary" onclick="openNewBookingModal()"><i class="fa-solid fa-plus"></i> New Booking</button>
+      </div>
+
+      <!-- Calendar horizontal strip -->
+      <div class="calendar-strip-widget">
+        <div class="calendar-strip-header">
+          <span>October 2023</span>
+          <div style="display: flex; gap: 12px; color: var(--grey-text); cursor: pointer;">
+            <i class="fa-solid fa-chevron-left" onclick="showToast('Previous week', 'info')"></i>
+            <i class="fa-solid fa-chevron-right" onclick="showToast('Next week', 'info')"></i>
+          </div>
+        </div>
+        <div class="calendar-strip-container">
+          <div class="calendar-strip-day" onclick="selectCalendarDate(9)">
+            <span class="day-lbl">M</span>
+            <span class="day-num">9</span>
+          </div>
+          <div class="calendar-strip-day" onclick="selectCalendarDate(10)">
+            <span class="day-lbl">T</span>
+            <span class="day-num">10</span>
+          </div>
+          <div class="calendar-strip-day" onclick="selectCalendarDate(11)">
+            <span class="day-lbl">W</span>
+            <span class="day-num">11</span>
+          </div>
+          <div class="calendar-strip-day active" onclick="selectCalendarDate(12)" id="calendar-strip-day-12">
+            <span class="day-lbl">T</span>
+            <span class="day-num">12</span>
+          </div>
+          <div class="calendar-strip-day" onclick="selectCalendarDate(13)">
+            <span class="day-lbl">F</span>
+            <span class="day-num">13</span>
+          </div>
+          <div class="calendar-strip-day" onclick="selectCalendarDate(14)">
+            <span class="day-lbl">S</span>
+            <span class="day-num">14</span>
+          </div>
+          <div class="calendar-strip-day" onclick="selectCalendarDate(15)">
+            <span class="day-lbl">S</span>
+            <span class="day-num">15</span>
+          </div>
+        </div>
+      </div>
+
       <div class="schedule-container">
         
         <!-- Left Sidebar: Datepicker calendar + filters -->
@@ -315,6 +376,8 @@
               <div class="calendar-day-num" onclick="selectCalendarDate(29)">29</div>
             </div>
           </div>
+
+          <h3 class="mobile-filters-title">FILTERS</h3>
 
           <!-- Shoot Types checklist filter -->
           <div class="filter-group-box">
@@ -427,57 +490,52 @@
     <section id="tab-account" class="tab-pane hidden">
       <div class="account-container">
         
-        <!-- Left: Bio & Services -->
-        <div style="display: flex; flex-direction: column; gap: 32px;">
-          <!-- Profile Quick Details Card -->
-          <div class="profile-card">
-            <div class="profile-avatar-wrapper">
-              <img src="assets/julian_profile.png" alt="Julian Vane" class="profile-avatar-large" id="profile-avatar-display">
-              <label class="avatar-edit-btn" for="avatar-upload-input" title="Upload profile photo">
-                <i class="fa-solid fa-pencil"></i>
-              </label>
-              <input type="file" id="avatar-upload-input" style="display: none;" accept="image/*" onchange="handleAvatarUpload(event)">
-            </div>
-            <h3 id="profile-name-display">Julian Vane</h3>
-            <p class="tagline" id="profile-title-display">Editorial & Commercial Photographer based in Brooklyn, NY</p>
-            
-            <div class="profile-skills-row" id="profile-skills-tags">
-              <span class="profile-skill-badge">Portrait</span>
-              <span class="profile-skill-badge">Street Fashion</span>
-              <span class="profile-skill-badge">Architecture</span>
-            </div>
-
-            <div class="profile-actions-row">
-              <button class="btn btn-outline" onclick="showToast('Sharing public URL...', 'success')">View Public Profile</button>
-              <button class="btn btn-primary" onclick="showToast('Portfolio link copied to clipboard!', 'success')">Share Portfolio</button>
-            </div>
+        <!-- Profile Quick Details Card -->
+        <div class="profile-card">
+          <div class="profile-avatar-wrapper">
+            <img src="assets/julian_profile.png" alt="Julian Vane" class="profile-avatar-large" id="profile-avatar-display">
+            <label class="avatar-edit-btn" for="avatar-upload-input" title="Upload profile photo">
+              <i class="fa-solid fa-pencil"></i>
+            </label>
+            <input type="file" id="avatar-upload-input" style="display: none;" accept="image/*" onchange="handleAvatarUpload(event)">
+          </div>
+          <h3 id="profile-name-display">Julian Vane</h3>
+          <p class="tagline" id="profile-title-display">Editorial & Commercial Photographer based in Brooklyn, NY</p>
+          
+          <div class="profile-skills-row" id="profile-skills-tags">
+            <span class="profile-skill-badge">Portrait</span>
+            <span class="profile-skill-badge">Street Fashion</span>
+            <span class="profile-skill-badge">Architecture</span>
           </div>
 
-          <!-- Bio block -->
-          <div class="card">
-            <div class="card-title-bar">
-              <h3 style="font-size: 18px;">Professional Bio</h3>
-              <i class="fa-regular fa-pen-to-square" style="color: var(--grey-text); cursor: pointer;" onclick="editBio()"></i>
-            </div>
-            <p style="font-size: 14px; color: #48484a;" id="profile-bio-display">
-              Specializing in high-contrast editorial photography with a focus on urban narratives. Over 10 years of experience working with luxury brands and international publications. I bring a cinematic lens to everyday moments.
-            </p>
-          </div>
-
-          <!-- Services pricing -->
-          <div class="card">
-            <div class="card-title-bar">
-              <h3 style="font-size: 18px;">Services & Pricing</h3>
-              <a href="#" class="view-link" onclick="openNewServiceModal()">+ New</a>
-            </div>
-            <div class="service-list" id="profile-services-list">
-              <!-- Loaded dynamically via JS -->
-            </div>
+          <div class="profile-actions-row">
+            <button class="btn btn-outline" onclick="showToast('Sharing public URL...', 'success')">View Public Profile</button>
+            <button class="btn btn-primary" onclick="showToast('Portfolio link copied to clipboard!', 'success')">Share Portfolio</button>
           </div>
         </div>
 
-        <!-- Middle: Portfolio Gallery Management -->
-        <div class="card" style="display: flex; flex-direction: column;">
+        <!-- Wallet box -->
+        <div class="card wallet-card" style="background-color: var(--dark-color); color: var(--white); border: none;">
+          <p style="text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em; color: var(--grey-light-text); margin-bottom: 4px;">Available Balance</p>
+          <h2 style="color: var(--white); font-size: 36px; margin-bottom: 24px;" id="account-wallet-amount">$4,850.00</h2>
+          <button class="btn btn-primary" style="width: 100%; font-weight: 700; height: 48px;" onclick="triggerPayout()">
+            <i class="fa-solid fa-building-columns"></i> Payout Now
+          </button>
+        </div>
+
+        <!-- Bio block -->
+        <div class="card bio-card">
+          <div class="card-title-bar">
+            <h3 style="font-size: 18px;">Professional Bio</h3>
+            <i class="fa-regular fa-pen-to-square" style="color: var(--grey-text); cursor: pointer;" onclick="editBio()"></i>
+          </div>
+          <p style="font-size: 14px; color: #48484a;" id="profile-bio-display">
+            Specializing in high-contrast editorial photography with a focus on urban narratives. Over 10 years of experience working with luxury brands and international publications. I bring a cinematic lens to everyday moments.
+          </p>
+        </div>
+
+        <!-- Portfolio Gallery Management -->
+        <div class="card portfolio-card" style="display: flex; flex-direction: column;">
           <div class="card-title-bar">
             <h3>Portfolio Management</h3>
             <div>
@@ -494,55 +552,54 @@
           </div>
         </div>
 
-        <!-- Right: Ledger / Balances & Configurations -->
-        <div style="display: flex; flex-direction: column; gap: 32px;">
-          <!-- Wallet box -->
-          <div class="card" style="background-color: var(--dark-color); color: var(--white); border: none;">
-            <p style="text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em; color: var(--grey-light-text); margin-bottom: 4px;">Available Balance</p>
-            <h2 style="color: var(--white); font-size: 36px; margin-bottom: 24px;" id="account-wallet-amount">$4,850.00</h2>
-            <button class="btn btn-primary" style="width: 100%; font-weight: 700; height: 48px;" onclick="triggerPayout()">
-              <i class="fa-solid fa-building-columns"></i> Payout Now
-            </button>
+        <!-- Services pricing -->
+        <div class="card services-card">
+          <div class="card-title-bar">
+            <h3 style="font-size: 18px;">Services & Pricing</h3>
+            <a href="#" class="view-link" onclick="openNewServiceModal()">+ New</a>
           </div>
-
-          <!-- Activity log -->
-          <div class="card">
-            <div class="card-title-bar">
-              <h3 style="font-size: 18px;">Recent Activity</h3>
-            </div>
-            <div class="activity-list" id="account-activity-list">
-              <!-- Loaded dynamically via JS -->
-            </div>
-            <a href="#" class="view-link text-center" style="display: block; margin-top: 16px;" onclick="showToast('Ledger ledger history loading...', 'info')">View Detailed Ledger</a>
+          <div class="service-list" id="profile-services-list">
+            <!-- Loaded dynamically via JS -->
           </div>
+        </div>
 
-          <!-- Configuration blocks -->
-          <div class="card">
-            <div class="card-title-bar">
-              <h3 style="font-size: 18px;">Account Settings</h3>
+        <!-- Activity log -->
+        <div class="card activity-card">
+          <div class="card-title-bar">
+            <h3 style="font-size: 18px;">Recent Activity</h3>
+          </div>
+          <div class="activity-list" id="account-activity-list">
+            <!-- Loaded dynamically via JS -->
+          </div>
+          <a href="#" class="view-link text-center" style="display: block; margin-top: 16px;" onclick="showToast('Ledger ledger history loading...', 'info')">View Detailed Ledger</a>
+        </div>
+
+        <!-- Configuration blocks -->
+        <div class="card settings-card">
+          <div class="card-title-bar">
+            <h3 style="font-size: 18px;">Account Settings</h3>
+          </div>
+          <div class="settings-list">
+            <div class="settings-item" onclick="showToast('Identity verification is complete.', 'success')">
+              <div class="settings-item-left">
+                <i class="fa-regular fa-circle-check" style="color: var(--success-color);"></i>
+                <span>Identity Verification</span>
+              </div>
+              <i class="fa-solid fa-chevron-right"></i>
             </div>
-            <div class="settings-list">
-              <div class="settings-item" onclick="showToast('Identity verification is complete.', 'success')">
-                <div class="settings-item-left">
-                  <i class="fa-regular fa-circle-check" style="color: var(--success-color);"></i>
-                  <span>Identity Verification</span>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
+            <div class="settings-item" onclick="showToast('Configure availability hours', 'info')">
+              <div class="settings-item-left">
+                <i class="fa-regular fa-clock"></i>
+                <span>Availability Rules</span>
               </div>
-              <div class="settings-item" onclick="showToast('Configure availability hours', 'info')">
-                <div class="settings-item-left">
-                  <i class="fa-regular fa-clock"></i>
-                  <span>Availability Rules</span>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
+              <i class="fa-solid fa-chevron-right"></i>
+            </div>
+            <div class="settings-item" onclick="showToast('Configure notification channels', 'info')">
+              <div class="settings-item-left">
+                <i class="fa-regular fa-bell"></i>
+                <span>Notification Preferences</span>
               </div>
-              <div class="settings-item" onclick="showToast('Configure notification channels', 'info')">
-                <div class="settings-item-left">
-                  <i class="fa-regular fa-bell"></i>
-                  <span>Notification Preferences</span>
-                </div>
-                <i class="fa-solid fa-chevron-right"></i>
-              </div>
+              <i class="fa-solid fa-chevron-right"></i>
             </div>
           </div>
         </div>
@@ -670,6 +727,26 @@
           <button type="submit" class="btn btn-primary">Create Service</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Sticky Navigation -->
+  <div class="mobile-bottom-nav">
+    <div class="mobile-nav-item active" data-tab="discover" onclick="switchTab('discover')">
+      <i class="fa-regular fa-compass"></i>
+      <span>Discover</span>
+    </div>
+    <div class="mobile-nav-item" data-tab="map" onclick="switchTab('map')">
+      <i class="fa-regular fa-map"></i>
+      <span>Map</span>
+    </div>
+    <div class="mobile-nav-item" data-tab="schedule" onclick="switchTab('schedule')">
+      <i class="fa-regular fa-calendar-days"></i>
+      <span>Schedule</span>
+    </div>
+    <div class="mobile-nav-item" data-tab="account" onclick="switchTab('account')">
+      <i class="fa-regular fa-user"></i>
+      <span>Account</span>
     </div>
   </div>
 

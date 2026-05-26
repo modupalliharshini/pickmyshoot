@@ -51,6 +51,16 @@ function switchTab(tabId) {
     }
   });
 
+  // Update mobile bottom nav items
+  const mobileNavItems = document.querySelectorAll('.mobile-bottom-nav .mobile-nav-item');
+  mobileNavItems.forEach(item => {
+    if (item.getAttribute('data-tab') === tabId) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+  });
+
   // Switch visible views
   const panes = document.querySelectorAll('.tab-pane');
   panes.forEach(pane => {
@@ -546,6 +556,17 @@ function selectCalendarDate(dayNum) {
   const days = document.querySelectorAll('.calendar-day-num:not(.empty)');
   days.forEach(day => {
     if (parseInt(day.textContent) === dayNum) {
+      day.classList.add('active');
+    } else {
+      day.classList.remove('active');
+    }
+  });
+
+  // Update mobile calendar strip widget style
+  const stripDays = document.querySelectorAll('.calendar-strip-day');
+  stripDays.forEach(day => {
+    const numEl = day.querySelector('.day-num');
+    if (numEl && parseInt(numEl.textContent) === dayNum) {
       day.classList.add('active');
     } else {
       day.classList.remove('active');

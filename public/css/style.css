@@ -1373,6 +1373,48 @@ header {
   grid-template-columns: 1fr 1.5fr 1fr;
   gap: 32px;
   padding: 40px 0;
+  align-items: start;
+}
+
+.customer-account-container {
+  grid-template-columns: 1.2fr 1.8fr;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.customer-search-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr;
+  gap: 16px;
+}
+
+.profile-card {
+  grid-column: 1;
+  grid-row: 1;
+}
+.bio-card {
+  grid-column: 1;
+  grid-row: 2;
+}
+.services-card {
+  grid-column: 1;
+  grid-row: 3;
+}
+.portfolio-card {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+}
+.wallet-card {
+  grid-column: 3;
+  grid-row: 1;
+}
+.activity-card {
+  grid-column: 3;
+  grid-row: 2;
+}
+.settings-card {
+  grid-column: 3;
+  grid-row: 3;
 }
 
 .profile-card {
@@ -2049,3 +2091,458 @@ header {
 .hidden {
   display: none !important;
 }
+
+/* ==================== MOBILE RESPONSIVE LAYOUTS ==================== */
+
+/* Mobile Bottom Sticky Navigation */
+.mobile-bottom-nav {
+  display: none;
+}
+
+/* Calendar horizontal strip */
+.calendar-strip-widget {
+  display: none;
+}
+
+/* Mobile-only Schedule Action buttons */
+.mobile-schedule-actions {
+  display: none;
+}
+
+/* Bottom sheet handle for map */
+.bottom-sheet-handle {
+  display: none;
+}
+
+/* Mobile-only elements default display */
+.mobile-schedule-header,
+.mobile-filters-title,
+.map-floating-action-btn {
+  display: none;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 80px; /* offset for mobile bottom nav */
+  }
+
+  header nav,
+  .search-bar-header {
+    display: none !important;
+  }
+
+  .logo img {
+    height: 38px; /* slightly smaller on mobile headers */
+  }
+
+  .header-wrapper {
+    height: 64px;
+    padding: 0 16px;
+  }
+
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background-color: var(--white);
+    border-top: 1px solid var(--grey-border);
+    z-index: 2000;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--grey-text);
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .mobile-nav-item i {
+    font-size: 20px;
+  }
+
+  .mobile-nav-item.active {
+    color: var(--primary-color);
+  }
+
+  /* Dashboard mobile */
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 20px 16px;
+  }
+
+  .welcome-section h2 {
+    font-size: 28px;
+  }
+
+  .welcome-section p {
+    font-size: 15px;
+  }
+
+  .request-card {
+    grid-template-columns: 1fr;
+  }
+
+  .request-image-wrapper {
+    height: 180px;
+    min-height: 180px;
+  }
+
+  .request-details {
+    padding: 16px;
+  }
+
+  .request-title {
+    font-size: 18px;
+  }
+
+  .request-meta-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  /* Map mobile bottom sheet */
+  .map-view-container {
+    grid-template-columns: 1fr;
+    height: calc(100vh - 134px);
+    position: relative;
+  }
+
+  .map-pane {
+    height: 50%;
+  }
+
+  .map-sidebar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 55%;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    border-left: none;
+    border-top: 1px solid var(--grey-border);
+    z-index: 100;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .bottom-sheet-handle {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .bottom-sheet-handle span {
+    width: 40px;
+    height: 5px;
+    background-color: var(--grey-border);
+    border-radius: 3px;
+    margin: 8px 0;
+  }
+
+  .map-sidebar-header {
+    padding: 8px 20px 8px 20px;
+  }
+
+  .map-requests-list {
+    padding: 12px 20px;
+  }
+
+  .nearby-card {
+    padding: 16px;
+  }
+
+  .nearby-card-actions {
+    flex-direction: row;
+  }
+
+  .nearby-card-actions button {
+    padding: 12px;
+  }
+
+  /* Schedule mobile calendar strip */
+  .schedule-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px 16px;
+  }
+
+  .calendar-widget {
+    display: none !important;
+  }
+
+  .calendar-strip-widget {
+    display: block;
+    background-color: var(--white);
+    border: 1px solid var(--grey-border);
+    border-radius: var(--border-radius-lg);
+    padding: 16px;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 8px;
+  }
+
+  .calendar-strip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .calendar-strip-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .calendar-strip-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    padding: 8px 0;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .calendar-strip-day .day-lbl {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--grey-text);
+    text-transform: uppercase;
+  }
+
+  .calendar-strip-day .day-num {
+    font-size: 15px;
+    font-weight: 700;
+    font-family: var(--font-headings);
+  }
+
+  .calendar-strip-day.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+  }
+
+  .calendar-strip-day.active .day-lbl {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .timeline-card {
+    padding: 16px;
+  }
+
+  .timeline-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .timeline-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .timeline-header div:last-child {
+    width: 100%;
+  }
+
+  .timeline-header .btn {
+    flex: 1;
+  }
+
+  .mobile-schedule-actions {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .mobile-schedule-actions button {
+    flex: 1;
+    height: 46px;
+  }
+  
+  .btn-dark {
+    background-color: var(--dark-color);
+    color: var(--white);
+  }
+  .btn-dark:hover {
+    background-color: #000;
+  }
+
+  .schedule-bottom-widgets {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Account mobile */
+  .account-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 20px 16px;
+  }
+
+  .profile-actions-row {
+    flex-direction: row;
+  }
+
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Custom overrides for responsive layouts */
+  .customer-search-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-account-container {
+    grid-template-columns: 1fr;
+  }
+
+  /* Reset photographer desktop grid positioning on mobile */
+  .profile-card,
+  .bio-card,
+  .services-card,
+  .portfolio-card,
+  .wallet-card,
+  .activity-card,
+  .settings-card {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+
+  /* Schedule layout reordering and header adjustments */
+  .schedule-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .schedule-sidebar {
+    order: 2;
+  }
+  .schedule-timeline-main {
+    order: 1;
+  }
+
+  .calendar-strip-widget {
+    display: block;
+    background-color: var(--white);
+    border: 1px solid var(--grey-border);
+    border-radius: var(--border-radius-lg);
+    padding: 16px;
+    box-shadow: var(--box-shadow);
+    margin: 0 16px 8px 16px;
+  }
+
+  .mobile-schedule-actions {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  .mobile-schedule-header {
+    display: block;
+    margin-bottom: 16px;
+    padding: 0 16px;
+  }
+  .mobile-schedule-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-family: var(--font-headings);
+  }
+  .mobile-schedule-header p {
+    font-size: 14px;
+    color: var(--grey-text);
+  }
+  .mobile-filters-title {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--grey-text);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+  .filter-group-box h4 {
+    display: none;
+  }
+  .filter-group-box {
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    margin-bottom: 12px;
+  }
+  .filter-group-box:first-of-type {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+  }
+  .filter-group-box:last-of-type {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Hide extra buttons on timeline header */
+  .timeline-title-area p {
+    display: none !important;
+  }
+  .timeline-header div:last-child {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .timeline-header div:last-child > div:last-child {
+    display: none !important;
+  }
+
+  /* Floating camera action button in mobile map */
+  .map-floating-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: 3px solid var(--white);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    cursor: pointer;
+  }
+
+  /* Hide top header logout button on mobile to match mockup clean design */
+  .header-right button[title="Logout"] {
+    display: none !important;
+  }
+}
+

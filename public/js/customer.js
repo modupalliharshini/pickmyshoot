@@ -41,6 +41,16 @@ function switchTab(tabId) {
     }
   });
 
+  // Update mobile bottom nav items
+  const mobileNavItems = document.querySelectorAll('.mobile-bottom-nav .mobile-nav-item');
+  mobileNavItems.forEach(item => {
+    if (item.getAttribute('data-tab') === tabId) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+  });
+
   // Switch visible views
   const panes = document.querySelectorAll('.tab-pane');
   panes.forEach(pane => {
